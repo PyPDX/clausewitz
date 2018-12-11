@@ -1,0 +1,2 @@
+version=$(cat ../VERSION)
+dist="dist/pypdx-clausewitz-$version.tar.gz"
