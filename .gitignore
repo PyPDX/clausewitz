@@ -1,0 +1,21 @@
+# IDE
+.idea/
+
+# Python
+*.py[cod]
+__pycache__/
+
+# Venv
+.venv/
+
+# Pip
+dist/
+*.egg-info/
+
+# PyTest
+.eggs/
+.pytest_cache/
+.coverage
+
+# Mac
+.DS_Store
