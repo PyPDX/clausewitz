@@ -1,6 +1,6 @@
 import os
 
-from setuptools import setup
+from setuptools import setup, find_packages()
 
 root_dir = os.path.abspath(os.path.dirname(__file__))
 
@@ -21,7 +21,7 @@ setup(
         "pytest",
     ],
 
-    packages=['clausewitz'],
+    packages=find_packages(),
 
     url='https://github.com/PyPDX/clausewitz',
 
