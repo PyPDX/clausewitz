@@ -1,6 +1,13 @@
 language: python
+
 python:
   - "3.6"
 
+cache: pip
+
+install:
+  - pip install -U pip setuptools
+  - pip install -e .[ci]
+
 script:
-  - python setup.py test
+  - pytest
