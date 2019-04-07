@@ -8,12 +8,15 @@ with open(os.path.join(root_dir, "VERSION")) as f:
     VERSION = f.read().rstrip()
 
 extra_test = [
-    'pytest',
-    'pytest-runner',
+    'pytest>=4',
+    'pytest-runner>=4',
+    'pytest-cov>=2',
 ]
 extra_dev = extra_test
 
-extra_ci = extra_test
+extra_ci = extra_test + [
+    'python-coveralls',
+]
 
 setup(
     name='pypdx-clausewitz',
