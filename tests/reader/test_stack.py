@@ -3,7 +3,9 @@ from clausewitz.reader.stack import ReaderStack
 
 s = '''
 a = { x y }
-b >= 0
+b>= 0
+c =1
+d=2
 '''
 
 
@@ -17,4 +19,6 @@ def test():
             ('y',),
         )),
         ('b', '>=', '0'),
+        ('c', '=', '1'),
+        ('d', '=', '2'),
     )

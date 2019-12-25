@@ -27,7 +27,8 @@ class Push(Exception):
 
 
 class Pop(Exception):
-    pass
+    def __init__(self, popped=''):
+        self.popped = popped
 
 
 class ReaderStack(object):
@@ -48,14 +49,19 @@ class ReaderStack(object):
         except IndexError:
             raise LeftoverStream from None
 
+    def __read_one(self, c):
+        try:
+            self.__reader.read(c)
+        except Push as push:
+            self.__push(push.reader)
+        except Pop as pop:
+            self.__pop()
+            for c in pop.popped:
+                self.__read_one(c)
+
     def read_all(self):
         for c in self.stream:
-            try:
-                self.__reader.read(c)
-            except Push as push:
-                self.__push(push.reader)
-            except Pop:
-                self.__pop()
+            self.__read_one(c)
 
         if len(self.__readers) > 1:
             raise UnfinishedStream

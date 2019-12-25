@@ -19,9 +19,11 @@ class AbstractNodeReader(AbstractReader):
         self.__end = end
 
     def read(self, c):
-        if self.end(c):
+        try:
+            self.end(c)
+        except Pop:
             self.cleanup()
-            raise Pop
+            raise
         self._read(c)
 
     def _read(self, c):
@@ -41,7 +43,7 @@ class AbstractNodeReader(AbstractReader):
         return read
 
     @cached_property
-    def _end(self):
+    def _end_func(self):
         end = self.__end
         if end is None:
             end = self.END
@@ -49,8 +51,12 @@ class AbstractNodeReader(AbstractReader):
             end = In(end)
         return end
 
+    def _end(self, c):
+        return self._end_func(c)
+
     def end(self, c):
-        return self._end(c)
+        if self._end(c):
+            raise Pop
 
 
 class AbstractMultiNodeReader(AbstractNodeReader):

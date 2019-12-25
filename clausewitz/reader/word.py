@@ -3,7 +3,7 @@ from functools import wraps
 
 from logical.collection import In
 
-from .stack import Push
+from .stack import Push, Pop
 from .string import AbstractStringReader
 
 
@@ -21,6 +21,13 @@ class AbstractWordReader(AbstractStringReader):
                 raise
 
         return new_read
+
+    def read(self, c):
+        try:
+            super().read(c)
+        except Pop as pop:
+            pop.popped = c  # send the character back
+            raise
 
 
 class NameReader(AbstractWordReader):

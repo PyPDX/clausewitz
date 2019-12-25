@@ -29,8 +29,8 @@ class StringReader(AbstractStringReader):
             self._escaping = not self._escaping
         super()._read(c)
 
-    def end(self, c):
-        return not self._escaping and super().end(c)
+    def _end(self, c):
+        return not self._escaping and super()._end(c)
 
 
 class CommentReader(AbstractStringReader):
