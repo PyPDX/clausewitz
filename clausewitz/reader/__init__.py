@@ -1,6 +1,3 @@
-__author__ = 'Michael'
-
-
 class AbstractReader(object):
     def read(self, c):
         raise NotImplementedError

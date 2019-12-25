@@ -6,8 +6,6 @@ from logical.collection import In
 from .stack import Push
 from .string import AbstractStringReader
 
-__author__ = 'Michael'
-
 
 class WordReader(AbstractStringReader):
     START = ~In(string.whitespace)

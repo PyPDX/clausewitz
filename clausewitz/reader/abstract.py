@@ -5,8 +5,6 @@ from logical.collection import In
 from . import AbstractReader
 from .stack import Push, Pop
 
-__author__ = 'Michael'
-
 
 class Start(object):
     def __init__(self, cls, func):

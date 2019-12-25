@@ -1,6 +1,3 @@
-__author__ = 'Michael'
-
-
 class Stream(object):
     def __init__(self, iterable):
         if isinstance(iterable, Stream):

@@ -3,8 +3,6 @@ from typing import List
 from . import AbstractReader
 from .stream import Stream
 
-__author__ = 'Michael'
-
 
 class InvalidStream(Exception):
     pass

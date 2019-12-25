@@ -5,8 +5,6 @@ from clausewitz.reader.stack import Push
 from clausewitz.reader.string import StringReader, CommentReader
 from clausewitz.reader.word import WordReader
 
-__author__ = 'Michael'
-
 
 def test_push():
     reader = NodeReader()

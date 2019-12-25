@@ -4,8 +4,6 @@ from clausewitz.reader.stack import Pop
 from clausewitz.reader.stream import Stream
 from clausewitz.reader.string import StringReader
 
-__author__ = 'Michael'
-
 s = 'hla4j9dlna'
 quote = StringReader.END
 

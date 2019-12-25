@@ -4,8 +4,6 @@ from clausewitz.reader.stack import Pop
 from clausewitz.reader.stream import Stream
 from clausewitz.reader.word import WordReader
 
-__author__ = 'Michael'
-
 s = 'jaoej490a anvmla'
 
 

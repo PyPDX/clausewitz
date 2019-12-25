@@ -1,7 +1,5 @@
 from .abstract import AbstractNodeReader
 
-__author__ = 'Michael'
-
 
 class AbstractStringReader(AbstractNodeReader):
     def __init__(self, end=None):

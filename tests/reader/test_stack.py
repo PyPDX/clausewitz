@@ -2,8 +2,6 @@ from clausewitz.reader.node import NodeReader
 from clausewitz.reader.stack import ReaderStack
 from clausewitz.reader.stream import Stream
 
-__author__ = 'Michael'
-
 s = '''
 a = { x y }
 b >= 0

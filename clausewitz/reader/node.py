@@ -5,8 +5,6 @@ from .abstract import AbstractMultiNodeReader
 from .string import StringReader, CommentReader
 from .word import WordReader
 
-__author__ = 'Michael'
-
 
 class NodeReader(AbstractMultiNodeReader):
     START = '{'

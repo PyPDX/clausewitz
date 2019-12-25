@@ -1,7 +1,5 @@
 from clausewitz.reader.stream import Stream, FileStream
 
-__author__ = 'Michael'
-
 s = 'jafieoea'
 s2 = '''
 hua3ion
