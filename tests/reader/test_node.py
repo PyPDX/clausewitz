@@ -3,7 +3,7 @@ import pytest
 from clausewitz.reader.node import NodeReader
 from clausewitz.reader.stack import Push
 from clausewitz.reader.string import StringReader, CommentReader
-from clausewitz.reader.word import WordReader
+from clausewitz.reader.word import NameReader
 
 
 def test_push():
@@ -22,7 +22,7 @@ def test_push():
 
     with pytest.raises(Push) as e_info:
         reader.read('a')
-    assert isinstance(e_info.value.reader, WordReader)
+    assert isinstance(e_info.value.reader, NameReader)
 
     reader.read(' ')
 

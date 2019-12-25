@@ -7,10 +7,7 @@ from .stack import Push
 from .string import AbstractStringReader
 
 
-class WordReader(AbstractStringReader):
-    START = ~In(string.whitespace)
-    END = string.whitespace
-
+class AbstractWordReader(AbstractStringReader):
     @classmethod
     def start(cls, start=None, *args, **kwargs):
         read = super().start(start, *args, **kwargs)
@@ -20,7 +17,22 @@ class WordReader(AbstractStringReader):
             try:
                 read(c)
             except Push as push:
-                push.reader.read(c)
+                push.reader.read(c)  # include the first character in result
                 raise
 
         return new_read
+
+
+class NameReader(AbstractWordReader):
+    START = string.ascii_letters
+    END = ~In(string.ascii_letters + string.digits)
+
+
+class NumberReader(AbstractWordReader):
+    START = string.digits
+    END = ~In(string.digits)
+
+
+class OperatorReader(AbstractWordReader):
+    START = string.punctuation
+    END = ~In(string.punctuation)

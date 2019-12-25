@@ -3,7 +3,7 @@ import string
 from . import AbstractReader
 from .abstract import AbstractMultiNodeReader
 from .string import StringReader, CommentReader
-from .word import WordReader
+from .word import NameReader, NumberReader, OperatorReader
 
 
 class NodeReader(AbstractMultiNodeReader):
@@ -16,7 +16,9 @@ class NodeReader(AbstractMultiNodeReader):
         StringReader,
         CommentReader,
         'self',
-        WordReader,
+        NameReader,
+        NumberReader,
+        OperatorReader,
     )
 
     def __init__(self, **kwargs):
