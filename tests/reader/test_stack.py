@@ -1,5 +1,3 @@
-from stream import IterStream
-
 from clausewitz.reader.node import NodeReader
 from clausewitz.reader.stack import ReaderStack
 
@@ -10,9 +8,8 @@ b >= 0
 
 
 def test():
-    stream = IterStream(s)
     reader = NodeReader()
-    stack = ReaderStack(stream, reader)
+    stack = ReaderStack(s, reader)
     stack.read_all()
     assert stack.result == (
         ('a', '=', (

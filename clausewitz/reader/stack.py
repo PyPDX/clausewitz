@@ -1,7 +1,5 @@
 from typing import List
 
-from stream import Stream
-
 from . import AbstractReader
 
 
@@ -33,7 +31,7 @@ class Pop(Exception):
 
 
 class ReaderStack(object):
-    def __init__(self, stream: Stream, reader: AbstractReader):
+    def __init__(self, stream, reader: AbstractReader):
         self.stream = stream
         self.__readers: List[AbstractReader] = [reader]
 

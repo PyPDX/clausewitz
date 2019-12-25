@@ -1,5 +1,4 @@
 import pytest
-from stream import IterStream
 
 from clausewitz.reader.stack import Pop
 from clausewitz.reader.string import StringReader
@@ -9,9 +8,8 @@ quote = StringReader.END
 
 
 def test():
-    stream = IterStream(s)
     reader = StringReader()
-    for c in stream:
+    for c in s:
         reader.read(c)
     assert reader.result == s
 

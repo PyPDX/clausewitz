@@ -4,7 +4,6 @@ from clausewitz import __version__
 
 requirements = [
     'logical-func',
-    'python-stream-iter',
 ]
 
 extra_test = [

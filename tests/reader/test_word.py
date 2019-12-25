@@ -1,5 +1,4 @@
 import pytest
-from stream import IterStream
 
 from clausewitz.reader.stack import Pop
 from clausewitz.reader.word import WordReader
@@ -8,7 +7,7 @@ s = 'jaoej490a anvmla'
 
 
 def test():
-    stream = IterStream(s)
+    stream = iter(s)
     reader = WordReader()
     with pytest.raises(Pop):
         for c in stream:
