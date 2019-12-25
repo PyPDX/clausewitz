@@ -12,6 +12,13 @@ class NodeReader(AbstractMultiNodeReader):
 
     OPERATORS = ('=', '>', '>=', '<', '<=')
 
+    DEFAULT_CHILDREN = (
+        StringReader,
+        CommentReader,
+        'self',
+        WordReader,
+    )
+
     def __init__(self, end=None):
         super().__init__(end)
         self.__result = []
@@ -58,11 +65,3 @@ class NodeReader(AbstractMultiNodeReader):
             tuple(item)
             for item in self.__result
         ])
-
-
-NodeReader.DEFAULT_CHILDREN = (
-    StringReader,
-    CommentReader,
-    NodeReader,
-    WordReader,
-)

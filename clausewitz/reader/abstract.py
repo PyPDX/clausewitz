@@ -56,18 +56,22 @@ class AbstractMultiNodeReader(AbstractNodeReader):
     def _load_default(self):
         for child in self.DEFAULT_CHILDREN:
             if not isinstance(child, tuple):
-                self.register(child)
-                continue
+                child = (child,)
 
             cls = child[0]
+            if cls == 'self':
+                cls = self.__class__
+
             if len(child) > 1:
                 args = child[1]
             else:
                 args = ()
+
             if len(child) > 2:
                 kwargs = child[2]
             else:
                 kwargs = {}
+
             self.register(cls, *args, **kwargs)
 
     def register(self, cls: typing.Type[AbstractNodeReader], *args, **kwargs):
