@@ -31,15 +31,24 @@ class AbstractWordReader(AbstractStringReader):
 
 
 class NameReader(AbstractWordReader):
-    START = string.ascii_letters
-    END = ~In(string.ascii_letters + string.digits)
+    START = string.ascii_letters + '_'
+    END = ~In(string.ascii_letters + string.digits + '_')
 
 
 class NumberReader(AbstractWordReader):
     START = string.digits
-    END = ~In(string.digits)
+    END = ~In(string.digits + '.')
+
+    @property
+    def result(self):
+        result = super().result
+        if '.' in result:
+            return float(result)
+        else:
+            return int(result)
 
 
 class OperatorReader(AbstractWordReader):
-    START = string.punctuation
-    END = ~In(string.punctuation)
+    _CHARACTERS = string.punctuation.replace('"', '').replace('_', '').replace('{', '')
+    START = _CHARACTERS
+    END = ~In(_CHARACTERS)
