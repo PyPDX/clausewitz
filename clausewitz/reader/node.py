@@ -61,8 +61,8 @@ class NodeReader(AbstractMultiNodeReader):
 
 
 NodeReader.DEFAULT_CHILDREN = (
-    StringReader.start(),
-    CommentReader.start(),
-    NodeReader.start(),
-    WordReader.start(),
+    StringReader,
+    CommentReader,
+    NodeReader,
+    WordReader,
 )

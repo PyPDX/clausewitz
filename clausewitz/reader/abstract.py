@@ -1,18 +1,9 @@
-from typing import Type, List
+import typing
 
 from logical.collection import In
 
 from . import AbstractReader
 from .stack import Push, Pop
-
-
-class Start(object):
-    def __init__(self, cls, func):
-        self.cls = cls
-        self.func = func
-
-    def __call__(self, val):
-        self.func(val)
 
 
 class AbstractNodeReader(AbstractReader):
@@ -44,7 +35,7 @@ class AbstractNodeReader(AbstractReader):
             if start(c):
                 raise Push(cls(*args, **kwargs))
 
-        return Start(cls, read)
+        return read
 
     def end(self, c):
         return self.__end(c)
@@ -55,21 +46,37 @@ class AbstractMultiNodeReader(AbstractNodeReader):
 
     def __init__(self, end=None):
         super().__init__(end)
-        self.__children: List[Start] = list(self.DEFAULT_CHILDREN)
+        self.__children: typing.Dict[
+            typing.Type[AbstractNodeReader],
+            typing.Callable,
+        ] = {}
+        self._load_default()
         self.__child = None
 
-    def register(self, cls: Type[AbstractNodeReader], *args, **kwargs):
-        for child in self.__children:
-            if child.cls == cls:
-                raise ValueError('Already registered')
-        self.__children.append(cls.start(*args, **kwargs))
+    def _load_default(self):
+        for child in self.DEFAULT_CHILDREN:
+            if not isinstance(child, tuple):
+                self.register(child)
+                continue
 
-    def unregister(self, cls: Type[AbstractNodeReader]):
-        self.__children: List[Start] = [
-            child
-            for child in self.__children
-            if child.cls != cls
-        ]
+            cls = child[0]
+            if len(child) > 1:
+                args = child[1]
+            else:
+                args = ()
+            if len(child) > 2:
+                kwargs = child[2]
+            else:
+                kwargs = {}
+            self.register(cls, *args, **kwargs)
+
+    def register(self, cls: typing.Type[AbstractNodeReader], *args, **kwargs):
+        if cls in self.__children:
+            raise ValueError('Already registered')
+        self.__children[cls] = cls.start(*args, **kwargs)
+
+    def unregister(self, cls: typing.Type[AbstractNodeReader]):
+        del self.__children[cls]
 
     def _process_child_result(self, child: AbstractReader):
         raise NotImplementedError
@@ -82,7 +89,7 @@ class AbstractMultiNodeReader(AbstractNodeReader):
     def _read(self, c):
         self.__process_child()
 
-        for child in self.__children:
+        for child in self.__children.values():
             try:
                 child(c)
             except Push as push:
