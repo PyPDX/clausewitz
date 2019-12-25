@@ -1,6 +1,7 @@
+from stream import IterStream
+
 from clausewitz.reader.node import NodeReader
 from clausewitz.reader.stack import ReaderStack
-from clausewitz.reader.stream import Stream
 
 s = '''
 a = { x y }
@@ -9,7 +10,7 @@ b >= 0
 
 
 def test():
-    stream = Stream(s)
+    stream = IterStream(s)
     reader = NodeReader()
     stack = ReaderStack(stream, reader)
     stack.read_all()

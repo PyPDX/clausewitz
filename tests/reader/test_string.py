@@ -1,7 +1,7 @@
 import pytest
+from stream import IterStream
 
 from clausewitz.reader.stack import Pop
-from clausewitz.reader.stream import Stream
 from clausewitz.reader.string import StringReader
 
 s = 'hla4j9dlna'
@@ -9,7 +9,7 @@ quote = StringReader.END
 
 
 def test():
-    stream = Stream(s)
+    stream = IterStream(s)
     reader = StringReader()
     for c in stream:
         reader.read(c)

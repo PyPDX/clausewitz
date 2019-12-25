@@ -1,14 +1,14 @@
 import pytest
+from stream import IterStream
 
 from clausewitz.reader.stack import Pop
-from clausewitz.reader.stream import Stream
 from clausewitz.reader.word import WordReader
 
 s = 'jaoej490a anvmla'
 
 
 def test():
-    stream = Stream(s)
+    stream = IterStream(s)
     reader = WordReader()
     with pytest.raises(Pop):
         for c in stream:

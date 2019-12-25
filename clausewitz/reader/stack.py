@@ -1,7 +1,8 @@
 from typing import List
 
+from stream import Stream
+
 from . import AbstractReader
-from .stream import Stream
 
 
 class InvalidStream(Exception):
