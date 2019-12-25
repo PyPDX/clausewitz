@@ -18,6 +18,20 @@ class StringReader(AbstractStringReader):
     START = '"'
     END = '"'
 
+    def __init__(self, end=None):
+        super().__init__(end)
+        self._escaping = False
+
+    def _read(self, c):
+        if c != '\\':
+            self._escaping = False
+        else:
+            self._escaping = not self._escaping
+        super()._read(c)
+
+    def end(self, c):
+        return not self._escaping and super().end(c)
+
 
 class CommentReader(AbstractStringReader):
     START = '#'

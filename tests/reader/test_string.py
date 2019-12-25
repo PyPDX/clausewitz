@@ -30,3 +30,11 @@ def test_end():
 
     with pytest.raises(Pop):
         reader.read(quote2)
+
+
+def test_escape():
+    s_escape = 'fjoa3df\\"a3ae'
+    reader = StringReader()
+    for c in s_escape:
+        reader.read(c)
+    assert reader.result == s_escape

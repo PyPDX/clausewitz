@@ -22,7 +22,7 @@ class AbstractNodeReader(AbstractReader):
     def __init__(self, end=None):
         if end is None:
             end = self.END
-        self.end = In(end)
+        self.__end = In(end)
 
     def read(self, c):
         if self.end(c):
@@ -45,6 +45,9 @@ class AbstractNodeReader(AbstractReader):
                 raise Push(cls(*args, **kwargs))
 
         return Start(cls, read)
+
+    def end(self, c):
+        return self.__end(c)
 
 
 class AbstractMultiNodeReader(AbstractNodeReader):
