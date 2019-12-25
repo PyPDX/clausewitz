@@ -1,11 +1,6 @@
-import os
-
 from setuptools import setup, find_packages
 
-root_dir = os.path.abspath(os.path.dirname(__file__))
-
-with open(os.path.join(root_dir, "VERSION")) as f:
-    VERSION = f.read().rstrip()
+from clausewitz import __version__
 
 requirements = [
     'logical-func',
@@ -25,7 +20,7 @@ extra_ci = extra_test + [
 setup(
     name='pypdx-clausewitz',
 
-    version=VERSION,
+    version=__version__,
 
     python_requires='>=3.6',
 
