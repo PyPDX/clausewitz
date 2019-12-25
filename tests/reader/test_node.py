@@ -34,6 +34,6 @@ def test_child():
     except Push as push:
         push.reader.read('a')
     reader.cleanup()
-    assert reader.result == (
+    assert reader.result == [
         ('a',),
-    )
+    ]

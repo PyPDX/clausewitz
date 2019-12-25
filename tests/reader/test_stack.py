@@ -13,12 +13,12 @@ def test():
     reader = NodeReader()
     stack = ReaderStack(s, reader)
     stack.read_all()
-    assert stack.result == (
-        ('a', '=', (
+    assert stack.result == [
+        ('a', '=', [
             ('x',),
             ('y',),
-        )),
+        ]),
         ('b', '>=', 0),
         ('c', '=', 1),
         ('d', '=', 2.1),
-    )
+    ]

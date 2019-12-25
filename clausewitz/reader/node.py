@@ -21,7 +21,7 @@ class NodeReader(AbstractMultiNodeReader):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.__result = []
+        self._result = []
         self._current = []
 
     def _process_child_result(self, child: AbstractReader):
@@ -52,7 +52,10 @@ class NodeReader(AbstractMultiNodeReader):
 
     def _push(self):
         if self._current:
-            self.__result.append(self._current)
+            self._result.append(tuple(
+                reader.result
+                for reader in self._current
+            ))
         self._current = []
 
     def cleanup(self):
@@ -61,10 +64,4 @@ class NodeReader(AbstractMultiNodeReader):
 
     @property
     def result(self):
-        return tuple(
-            tuple(
-                reader.result
-                for reader in row
-            )
-            for row in self.__result
-        )
+        return self._result
