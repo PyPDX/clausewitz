@@ -1,31 +1,28 @@
 import string
+from functools import wraps
 
-from .abstract import AbstractNodeReader, Start, Match
+from logical.collection import In
+
 from .stack import Push
 from .string import AbstractStringReader
 
 __author__ = 'Michael'
 
 
-class AbstractWordReader(AbstractNodeReader):
-    NOT_START = string.whitespace
+class WordReader(AbstractStringReader):
+    START = ~In(string.whitespace)
     END = string.whitespace
 
     @classmethod
-    def start(cls, not_start=None, *args, **kwargs):
-        if not_start is None:
-            not_start = cls.NOT_START
-        not_start = Match(not_start)
+    def start(cls, start=None, *args, **kwargs):
+        read = super().start(start, *args, **kwargs)
 
-        def read(c):
-            if not_start(c):
-                return
-            reader = cls(*args, **kwargs)
-            reader.read(c)
-            raise Push(reader)
+        @wraps(read)
+        def new_read(c):
+            try:
+                read(c)
+            except Push as push:
+                push.reader.read(c)
+                raise
 
-        return Start(cls, read)
-
-
-class WordReader(AbstractWordReader, AbstractStringReader):
-    pass
+        return new_read

@@ -1,19 +1,11 @@
 from typing import Type, List
 
+from logical.collection import In
+
 from . import AbstractReader
 from .stack import Push, Pop
 
 __author__ = 'Michael'
-
-
-class Match(object):
-    def __init__(self, match):
-        if match is None:
-            raise ValueError('cannot be None')
-        self.match = match
-
-    def __call__(self, val):
-        return val in self.match
 
 
 class Start(object):
@@ -32,7 +24,7 @@ class AbstractNodeReader(AbstractReader):
     def __init__(self, end=None):
         if end is None:
             end = self.END
-        self.end = Match(end)
+        self.end = In(end)
 
     def read(self, c):
         if self.end(c):
@@ -47,7 +39,8 @@ class AbstractNodeReader(AbstractReader):
     def start(cls, start=None, *args, **kwargs):
         if start is None:
             start = cls.START
-        start = Match(start)
+        if not callable(start):
+            start = In(start)
 
         def read(c):
             if start(c):

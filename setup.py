@@ -7,6 +7,10 @@ root_dir = os.path.abspath(os.path.dirname(__file__))
 with open(os.path.join(root_dir, "VERSION")) as f:
     VERSION = f.read().rstrip()
 
+requirements = [
+    'logical-func',
+]
+
 extra_test = [
     'pytest>=4',
     'pytest-runner>=4',
@@ -24,6 +28,8 @@ setup(
     version=VERSION,
 
     python_requires='>=3.6',
+
+    install_requires=requirements,
 
     extras_require={
         'test': extra_test,
