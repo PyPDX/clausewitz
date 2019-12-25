@@ -1,5 +1,6 @@
 import typing
 
+from cached_property import cached_property
 from logical.collection import In
 
 from . import AbstractReader
@@ -10,10 +11,12 @@ class AbstractNodeReader(AbstractReader):
     START = None
     END = None
 
-    def __init__(self, end=None):
-        if end is None:
-            end = self.END
-        self.__end = In(end)
+    def __init__(
+            self,
+            *,
+            end=None,
+    ):
+        self.__end = end
 
     def read(self, c):
         if self.end(c):
@@ -37,15 +40,24 @@ class AbstractNodeReader(AbstractReader):
 
         return read
 
+    @cached_property
+    def _end(self):
+        end = self.__end
+        if end is None:
+            end = self.END
+        if not callable(end):
+            end = In(end)
+        return end
+
     def end(self, c):
-        return self.__end(c)
+        return self._end(c)
 
 
 class AbstractMultiNodeReader(AbstractNodeReader):
     DEFAULT_CHILDREN = ()
 
-    def __init__(self, end=None):
-        super().__init__(end)
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
         self.__children: typing.Dict[
             typing.Type[AbstractNodeReader],
             typing.Callable,

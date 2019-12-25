@@ -19,8 +19,8 @@ class NodeReader(AbstractMultiNodeReader):
         WordReader,
     )
 
-    def __init__(self, end=None):
-        super().__init__(end)
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
         self.__result = []
         self._current = []
 

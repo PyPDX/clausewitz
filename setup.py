@@ -3,6 +3,7 @@ from setuptools import setup, find_packages
 from clausewitz import __version__
 
 requirements = [
+    'cached-property',
     'logical-func',
 ]
 

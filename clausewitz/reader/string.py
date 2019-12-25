@@ -2,8 +2,8 @@ from .abstract import AbstractNodeReader
 
 
 class AbstractStringReader(AbstractNodeReader):
-    def __init__(self, end=None):
-        super().__init__(end)
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
         self._result = ''
 
     def _read(self, c):
@@ -18,8 +18,8 @@ class StringReader(AbstractStringReader):
     START = '"'
     END = '"'
 
-    def __init__(self, end=None):
-        super().__init__(end)
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
         self._escaping = False
 
     def _read(self, c):
