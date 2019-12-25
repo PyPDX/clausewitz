@@ -10,8 +10,6 @@ class NodeReader(AbstractMultiNodeReader):
     START = '{'
     END = '}'
 
-    OPERATORS = ('=', '>', '>=', '<', '<=')
-
     DEFAULT_CHILDREN = (
         StringReader,
         CommentReader,
@@ -30,14 +28,14 @@ class NodeReader(AbstractMultiNodeReader):
         if isinstance(child, CommentReader):
             return
 
-        if child.result in self.OPERATORS:
+        if isinstance(child, OperatorReader):
             pass
-        elif self._last in self.OPERATORS:
+        elif isinstance(self._last, OperatorReader):
             pass
         else:
             self._push()
 
-        self._add(child.result)
+        self._add(child)
 
     def _read_self(self, c):
         if c not in string.whitespace:
@@ -63,7 +61,10 @@ class NodeReader(AbstractMultiNodeReader):
 
     @property
     def result(self):
-        return tuple([
-            tuple(item)
-            for item in self.__result
-        ])
+        return tuple(
+            tuple(
+                reader.result
+                for reader in row
+            )
+            for row in self.__result
+        )
