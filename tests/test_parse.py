@@ -8,7 +8,7 @@ def test_parse(sample):
     expected = {
         'a': ['x.000', 'y'],
         'b': 0,
-        'c': 1,
+        'c': 'true',
         'd': -2.1,
         'e.xyz': 'hello\nworl"d',
     }

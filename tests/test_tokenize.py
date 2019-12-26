@@ -7,7 +7,7 @@ def test_prepare(sample):
     expected = b'''\
 a = { x.000 """y""" }
 b= 0
-c =1
+c =true
 d=-2.1
 e.xyz = """hello
 worl\\"d"""
@@ -39,7 +39,7 @@ def test_tokenize(sample):
 
         (tokenize.NAME, 'c'),
         (tokenize.OP, '='),
-        (tokenize.NUMBER, '1'),
+        (tokenize.NAME, 'true'),
         (tokenize.NEWLINE, '\n'),
 
         (tokenize.NAME, 'd'),
