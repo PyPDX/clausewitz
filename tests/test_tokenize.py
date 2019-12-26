@@ -3,7 +3,7 @@ import tokenize
 from clausewitz.tokenize import prepare
 
 
-def test_prepare(sample):
+def test_prepare(data):
     expected = b'''\
 a = { x.000 """y""" 10z }
 b= 0
@@ -15,13 +15,14 @@ f = {}
 d = 100
 '''
 
-    readline = prepare(sample)
-    for line in expected.splitlines(keepends=True):
-        assert readline() == line
-    assert readline() == b''
+    with data('sample.txt') as readline:
+        readline = prepare(readline)
+        for line in expected.splitlines(keepends=True):
+            assert readline() == line
+        assert readline() == b''
 
 
-def test_tokenize(sample):
+def test_tokenize(data):
     expected = (
         (tokenize.ENCODING, 'utf-8'),
 
@@ -73,10 +74,11 @@ def test_tokenize(sample):
         (tokenize.ENDMARKER, ''),
     )
 
-    tokens = tokenize.tokenize(prepare(sample))
-    for t, s in expected:
-        token = next(tokens)
-        assert token.type == t
-        assert token.string == s
+    with data('sample.txt') as readline:
+        tokens = tokenize.tokenize(prepare(readline))
+        for t, s in expected:
+            token = next(tokens)
+            assert token.type == t
+            assert token.string == s
 
-    assert tuple(tokens) == ()
+        assert tuple(tokens) == ()

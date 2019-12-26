@@ -4,7 +4,7 @@ from clausewitz.parse import parse
 from clausewitz.tokenize import prepare
 
 
-def test_parse(sample):
+def test_parse(data):
     expected = {
         '__dupkeys__': {
             'd': ['d', 'd+1'],
@@ -18,5 +18,6 @@ def test_parse(sample):
         'd+1': 100,
     }
 
-    value = parse(tokenize(prepare(sample)))
+    with data('sample.txt') as readline:
+        value = parse(tokenize(prepare(readline)))
     assert value == expected
