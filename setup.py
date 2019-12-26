@@ -3,8 +3,6 @@ from setuptools import setup, find_packages
 from clausewitz import __version__
 
 requirements = [
-    'cached-property',
-    'logical-func',
 ]
 
 extra_test = [
@@ -35,6 +33,12 @@ setup(
     },
 
     packages=find_packages(),
+
+    entry_points={
+        'console_scripts': [
+            'tokenize-prepare=clausewitz.tokenize:prepare_cmd',
+        ],
+    },
 
     url='https://github.com/PyPDX/clausewitz',
 
