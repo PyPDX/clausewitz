@@ -163,29 +163,75 @@ class Statement(_typing.List[Element]):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self._neg = False
+        self._queue: _typing.List[_TokenInfo] = []
 
     def _raise(self, token: _TokenInfo = None):
         if token is not None:
-            raise self.Invalid(self, self._neg, token)
+            raise self.Invalid(self, self._queue, token)
         else:
-            raise self.Invalid(self, self._neg)
+            raise self.Invalid(self, self._queue)
 
     def _end(self, *, reject_last: bool):
-        if self._neg:
-            self._raise()
+        if self._queue:
+            if self._neg:
+                return self._raise()
+            elif self._name:
+                self.append(Name(self._queue[0].string))
+            elif self._name_dot:
+                return self._raise()
+            else:
+                return self._raise()
         raise self.End(reject_last)
 
     @property
     def last_op(self) -> bool:
         return len(self) == 0 or isinstance(self[-1], Operator)
 
+    @property
+    def _neg(self) -> bool:
+        return len(self._queue) == 1 and \
+               self._queue[0].exact_type == _tokenize.MINUS
+
+    @property
+    def _name(self) -> bool:
+        return len(self._queue) == 1 and \
+               self._queue[0].type == _tokenize.NAME
+
+    @property
+    def _name_dot(self) -> bool:
+        return len(self._queue) == 2 and \
+               self._queue[0].type == _tokenize.NAME and \
+               self._queue[1].exact_type == _tokenize.DOT
+
     def push(self, token: _TokenInfo) -> None:
-        if self._neg:
-            if token.type != _tokenize.NUMBER:
-                self._raise(token)
-            self.append(Number(True, token.string))
-            self._neg = False
+        if self._queue:
+            if self._neg:
+                if token.type != _tokenize.NUMBER:
+                    return self._raise(token)
+                self.append(Number(True, token.string))
+
+            elif self._name:
+                if token.type == _tokenize.NUMBER and token.string.startswith('.'):
+                    self.append(Name(self._queue[0].string + token.string))
+
+                elif token.exact_type == _tokenize.DOT:
+                    self._queue.append(token)
+                    return
+
+                else:
+                    self.append(Name(self._queue[0].string))
+                    self._queue = []
+                    return self.push(token)
+
+            elif self._name_dot:
+                if token.type != _tokenize.NAME:
+                    return self._raise(token)
+                self.append(Name(self._queue[0].string + self._queue[1].string + token.string))
+
+            else:
+                return self._raise(token)
+
+            self._queue = []
             return
 
         if not self.last_op:
@@ -200,7 +246,7 @@ class Statement(_typing.List[Element]):
 
         if token.type == _tokenize.OP:
             if token.exact_type == _tokenize.MINUS:
-                self._neg = True
+                self._queue.append(token)
                 return
             if token.exact_type == _tokenize.LBRACE:
                 self.append(Scope())
@@ -208,7 +254,7 @@ class Statement(_typing.List[Element]):
             return self._raise(token)  # two operators
 
         if token.type == _tokenize.NAME:
-            self.append(Name(token.string))
+            self._queue.append(token)
         elif token.type == _tokenize.NUMBER:
             self.append(Number(False, token.string))
         elif token.type == _tokenize.STRING:

@@ -6,11 +6,11 @@ from clausewitz.tokenize import prepare
 
 def test_parse(sample):
     expected = {
-        'a': ['x', 'y'],
+        'a': ['x.000', 'y'],
         'b': 0,
         'c': 1,
         'd': -2.1,
-        'e': 'hello\nworl"d',
+        'e.xyz': 'hello\nworl"d',
     }
 
     value = parse(tokenize(prepare(sample)))

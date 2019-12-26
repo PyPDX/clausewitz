@@ -5,11 +5,11 @@ from clausewitz.tokenize import prepare
 
 def test_prepare(sample):
     expected = b'''\
-a = { x """y""" }
+a = { x.000 """y""" }
 b= 0
 c =1
 d=-2.1
-e = """hello
+e.xyz = """hello
 worl\\"d"""
 '''
 
@@ -27,6 +27,7 @@ def test_tokenize(sample):
         (tokenize.OP, '='),
         (tokenize.OP, '{'),
         (tokenize.NAME, 'x'),
+        (tokenize.NUMBER, '.000'),
         (tokenize.STRING, '"""y"""'),
         (tokenize.OP, '}'),
         (tokenize.NEWLINE, '\n'),
@@ -48,6 +49,8 @@ def test_tokenize(sample):
         (tokenize.NEWLINE, '\n'),
 
         (tokenize.NAME, 'e'),
+        (tokenize.OP, '.'),
+        (tokenize.NAME, 'xyz'),
         (tokenize.OP, '='),
         (tokenize.STRING, '"""hello\nworl\\"d"""'),
         (tokenize.NEWLINE, '\n'),
