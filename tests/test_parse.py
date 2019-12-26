@@ -1,6 +1,8 @@
 from tokenize import tokenize
 
-from clausewitz.parse import parse
+import pytest
+
+from clausewitz.parse import parse, Unfinished
 from clausewitz.tokenize import prepare
 
 
@@ -21,3 +23,9 @@ def test_parse(data):
     with data('sample.txt') as readline:
         value = parse(tokenize(prepare(readline)))
     assert value == expected
+
+
+def test_parse_unfinished(data):
+    with data('error-unfinished.txt') as readline:
+        with pytest.raises(Unfinished):
+            parse(tokenize(prepare(readline)))
