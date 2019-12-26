@@ -6,7 +6,7 @@ from clausewitz.tokenize import prepare
 def test_prepare(sample):
     expected = b'''\
 a = { x """y""" }
-b>= 0
+b= 0
 c =1
 d=-2.1
 e = """hello
@@ -32,7 +32,7 @@ def test_tokenize(sample):
         (tokenize.NEWLINE, '\n'),
 
         (tokenize.NAME, 'b'),
-        (tokenize.OP, '>='),
+        (tokenize.OP, '='),
         (tokenize.NUMBER, '0'),
         (tokenize.NEWLINE, '\n'),
 

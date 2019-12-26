@@ -3,6 +3,8 @@ from setuptools import setup, find_packages
 from clausewitz import __version__
 
 requirements = [
+    'cached-property',
+    'returns-decorator',
 ]
 
 extra_test = [
@@ -37,6 +39,7 @@ setup(
     entry_points={
         'console_scripts': [
             'tokenize-prepare=clausewitz.tokenize:prepare_cmd',
+            'pdx-jsonify=clausewitz.parse:parse_cmd',
         ],
     },
 
