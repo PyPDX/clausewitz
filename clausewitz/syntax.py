@@ -123,12 +123,12 @@ class Scope(Element):
     @cached_property
     def value(self):
         try:
-            return self._as_list()
+            return self._as_dict()
         except self.SerializationError:
             pass
 
         try:
-            return self._as_dict()
+            return self._as_list()
         except self.SerializationError:
             pass
 
@@ -138,6 +138,9 @@ class Scope(Element):
         tokens = iter(tokens)
 
         for token in tokens:
+            if token.exact_type == _tokenize.RBRACE and len(self._statements) == 0:
+                return
+
             try:
                 self.current_statement.push(token)
             except Statement.End as end:

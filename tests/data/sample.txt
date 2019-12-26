@@ -4,3 +4,4 @@ c =true
 d=-2.1
 e.xyz = "hello
 worl\"d"
+f = {}

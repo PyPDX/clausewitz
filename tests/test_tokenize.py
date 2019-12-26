@@ -11,6 +11,7 @@ c =true
 d=-2.1
 e.xyz = """hello
 worl\\"d"""
+f = {}
 '''
 
     readline = prepare(sample)
@@ -54,6 +55,12 @@ def test_tokenize(sample):
         (tokenize.NAME, 'xyz'),
         (tokenize.OP, '='),
         (tokenize.STRING, '"""hello\nworl\\"d"""'),
+        (tokenize.NEWLINE, '\n'),
+
+        (tokenize.NAME, 'f'),
+        (tokenize.OP, '='),
+        (tokenize.OP, '{'),
+        (tokenize.OP, '}'),
         (tokenize.NEWLINE, '\n'),
 
         (tokenize.ENDMARKER, ''),

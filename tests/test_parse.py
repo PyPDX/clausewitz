@@ -11,6 +11,7 @@ def test_parse(sample):
         'c': 'true',
         'd': -2.1,
         'e.xyz': 'hello\nworl"d',
+        'f': {},
     }
 
     value = parse(tokenize(prepare(sample)))
