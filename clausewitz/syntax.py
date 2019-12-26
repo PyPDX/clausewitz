@@ -77,7 +77,10 @@ class Operator(Element):
 
 class Scope(Element):
     class SerializationError(Exception):
-        pass
+        def __init__(self, data=None):
+            from pprint import pformat
+            super().__init__(pformat(data))
+            self.data = data
 
     def __init__(self):
         self._statements: _typing.List['Statement'] = []
