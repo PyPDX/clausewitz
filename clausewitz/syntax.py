@@ -138,9 +138,6 @@ class Scope(Element):
         tokens = iter(tokens)
 
         for token in tokens:
-            if token.exact_type == _tokenize.RBRACE:
-                return
-
             try:
                 self.current_statement.push(token)
             except Statement.End as end:
@@ -151,6 +148,9 @@ class Scope(Element):
             if token.exact_type == _tokenize.LBRACE:
                 scope: Scope = self.current_statement[-1]
                 scope.push(tokens)
+
+            elif token.exact_type == _tokenize.RBRACE:
+                return
 
 
 class Statement(_typing.List[Element]):
