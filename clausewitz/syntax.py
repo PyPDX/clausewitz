@@ -10,6 +10,9 @@ from returns import (
     returns as _returns,
 )
 
+from .datastructure import (
+    DupKeyDict as _Dict,
+)
 from .strings import (
     unescape as _unescape,
 )
@@ -105,7 +108,7 @@ class Scope(Element):
                 raise self.SerializationError
             yield statement[0].value
 
-    @_returns(dict)
+    @_returns(_Dict)
     def _as_dict(self):
         for statement in self._statements:
             if len(statement) != 3:

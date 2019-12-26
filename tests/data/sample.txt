@@ -5,3 +5,4 @@ d=-2.1
 e.xyz = "hello
 worl\"d\""
 f = {}
+d = 100

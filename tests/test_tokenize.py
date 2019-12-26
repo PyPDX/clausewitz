@@ -12,6 +12,7 @@ d=-2.1
 e.xyz = """hello
 worl\\"d\\""""
 f = {}
+d = 100
 '''
 
     readline = prepare(sample)
@@ -62,6 +63,11 @@ def test_tokenize(sample):
         (tokenize.OP, '='),
         (tokenize.OP, '{'),
         (tokenize.OP, '}'),
+        (tokenize.NEWLINE, '\n'),
+
+        (tokenize.NAME, 'd'),
+        (tokenize.OP, '='),
+        (tokenize.NUMBER, '100'),
         (tokenize.NEWLINE, '\n'),
 
         (tokenize.ENDMARKER, ''),
