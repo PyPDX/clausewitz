@@ -10,7 +10,7 @@ def test_parse(sample):
         'b': 0,
         'c': 'true',
         'd': -2.1,
-        'e.xyz': 'hello\nworl"d',
+        'e.xyz': 'hello\nworl"d"',
         'f': {},
     }
 

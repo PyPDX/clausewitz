@@ -1,2 +1,2 @@
 def unescape(s: str) -> str:
-    return s.strip('"').encode().decode('unicode-escape')
+    return s[3:-3].encode().decode('unicode-escape')

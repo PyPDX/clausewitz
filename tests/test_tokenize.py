@@ -10,7 +10,7 @@ b= 0
 c =true
 d=-2.1
 e.xyz = """hello
-worl\\"d"""
+worl\\"d\\""""
 f = {}
 '''
 
@@ -54,7 +54,7 @@ def test_tokenize(sample):
         (tokenize.OP, '.'),
         (tokenize.NAME, 'xyz'),
         (tokenize.OP, '='),
-        (tokenize.STRING, '"""hello\nworl\\"d"""'),
+        (tokenize.STRING, '"""hello\nworl\\"d\\""""'),
         (tokenize.NEWLINE, '\n'),
 
         (tokenize.NAME, 'f'),
