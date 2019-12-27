@@ -13,6 +13,7 @@ e.xyz = """hello
 worl\\"d\\""""
 f = {}
 d = 100
+# this is a comment
 '''
 
     with data('sample.txt') as readline:
@@ -70,6 +71,9 @@ def test_tokenize(data):
         (tokenize.OP, '='),
         (tokenize.NUMBER, '100'),
         (tokenize.NEWLINE, '\n'),
+
+        (tokenize.COMMENT, '# this is a comment'),
+        (tokenize.NL, '\n'),
 
         (tokenize.ENDMARKER, ''),
     )
