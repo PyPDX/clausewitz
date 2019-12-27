@@ -1,5 +1,4 @@
 import abc as _abc
-import tokenize as _tokenize
 import typing as _typing
 from tokenize import (
     TokenInfo as _TokenInfo,
@@ -145,7 +144,7 @@ class Scope(Element):
 
         try:
             for token in tokens:
-                if token.exact_type == _tokenize.RBRACE and len(self._statements) == 0:
+                if token.exact_type in _Tokens.END_SCOPE and len(self._statements) == 0:
                     return
 
                 try:
@@ -155,100 +154,18 @@ class Scope(Element):
                     if end.reject_last:
                         self.current_statement.push(token)
 
-                if token.exact_type == _tokenize.LBRACE:
+                if token.exact_type in _Tokens.START_SCOPE:
                     scope: Scope = self.current_statement[-1]
                     scope.push(tokens)
 
-                elif token.exact_type == _tokenize.RBRACE:
+                elif token.exact_type in _Tokens.END_SCOPE:
                     return
 
         finally:
             self.finish_statement()
 
 
-class _StatementQueue(_typing.List[_TokenInfo]):
-    class ShouldNotAppend(Exception):
-        pass
-
-    class EndStatement(Exception):
-        pass
-
-    def __init__(self, parent: 'Statement'):
-        super().__init__()
-        self._parent = parent
-
-    def append(self, token: _TokenInfo):
-        if token.exact_type in Statement.OPS:
-            raise self.ShouldNotAppend
-
-        if token.exact_type in (
-                _tokenize.RBRACE,
-        ):
-            raise self.EndStatement
-
-        if token.exact_type in (
-                _tokenize.LBRACE,
-                _tokenize.STRING,
-        ):
-            if self:
-                raise self.EndStatement
-
-            else:
-                if self._parent.last_op:
-                    raise self.ShouldNotAppend
-                else:
-                    raise self.EndStatement
-
-        if self:
-            if self[-1].end != token.start:
-                raise self.EndStatement
-
-        else:
-            if not self._parent.last_op:
-                raise self.EndStatement
-
-        super().append(token)
-
-    @property
-    def number(self) -> _typing.Optional[Number]:
-        if not self:
-            return None
-
-        elif len(self) == 1:
-            if self[0].type != _tokenize.NUMBER:
-                return None
-            return Number(False, self[0].string)
-
-        elif len(self) == 2:
-            if not (self[0].exact_type == _tokenize.MINUS and
-                    self[1].type == _tokenize.NUMBER):
-                return None
-            return Number(True, self[1].string)
-
-        else:
-            return None
-
-    @property
-    def name(self) -> Name:
-        return Name(''.join(
-            token.string
-            for token in self
-        ))
-
-    @property
-    def value(self) -> Element:
-        return self.number or self.name
-
-
 class Statement(_typing.List[Element]):
-    OPS = (
-        _tokenize.EQUAL,
-        _tokenize.LESS,
-        _tokenize.LESSEQUAL,
-        _tokenize.GREATER,
-        _tokenize.GREATEREQUAL,
-    )
-
     class End(Exception):
         def __init__(self, reject_last: bool):
             self.reject_last = reject_last
@@ -258,7 +175,7 @@ class Statement(_typing.List[Element]):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self._queue: _StatementQueue = _StatementQueue(self)
+        self._queue: _Tokens = _Tokens(self)
 
     def _raise(self, token: _TokenInfo = None):
         if token is not None:
@@ -286,17 +203,22 @@ class Statement(_typing.List[Element]):
         except self._queue.ShouldNotAppend:
             self.finish_queue()
 
-            if token.exact_type in self.OPS:
+            if token.exact_type in _Tokens.OPERATORS:
                 self.append(Operator(token.exact_type, token.string))
-            elif token.exact_type == _tokenize.LBRACE:
+            elif token.exact_type in _Tokens.START_SCOPE:
                 self.append(Scope())
-            elif token.exact_type == _tokenize.STRING:
+            elif token.exact_type in _Tokens.STRING_TYPES:
                 self.append(String(token.string))
             else:
                 self._raise(token)
 
         except self._queue.EndStatement:
-            if token.exact_type == _tokenize.RBRACE:
+            if token.exact_type in _Tokens.END_SCOPE:
                 return self._end(reject_last=False)
             else:
                 return self._end(reject_last=True)
+
+
+from .token import (
+    Tokens as _Tokens,
+)
