@@ -10,6 +10,7 @@ install:
   - pip install -e .[ci]
 
 script:
+  - flake8 .
   - pytest --cov --cov-report term-missing:skip-covered
 
 after_success:

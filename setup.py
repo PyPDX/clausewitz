@@ -4,10 +4,15 @@ from clausewitz import __version__
 
 requirements = [
     'cached-property',
-    'logical-func',
+    'returns-decorator',
 ]
 
 extra_test = [
+    'flake8',
+    'flake8-commas',
+    'flake8-print',
+    'flake8-quotes',
+
     'pytest>=4',
     'pytest-runner>=4',
     'pytest-cov>=2',
@@ -15,6 +20,7 @@ extra_test = [
 extra_dev = extra_test
 
 extra_ci = extra_test + [
+    'coverage==4.*',
     'python-coveralls',
 ]
 
@@ -35,6 +41,13 @@ setup(
     },
 
     packages=find_packages(),
+
+    entry_points={
+        'console_scripts': [
+            'tokenize-prepare=clausewitz.util.tokenize:prepare_cmd',
+            'pdx-jsonify=clausewitz.parse:parse_cmd',
+        ],
+    },
 
     url='https://github.com/PyPDX/clausewitz',
 
