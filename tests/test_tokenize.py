@@ -8,11 +8,11 @@ def test_prepare(data):
 a = { x.000 """y""" 10z }
 b= 0
 c =true
-d=-2.1
+d>=-2.1
 e.xyz = """hello
 worl\\"d\\""""
 f = {}
-d = 100
+d < 100
 # this is a comment
 '''
 
@@ -49,7 +49,7 @@ def test_tokenize(data):
         (tokenize.NEWLINE, '\n'),
 
         (tokenize.NAME, 'd'),
-        (tokenize.OP, '='),
+        (tokenize.OP, '>='),
         (tokenize.OP, '-'),
         (tokenize.NUMBER, '2.1'),
         (tokenize.NEWLINE, '\n'),
@@ -68,7 +68,7 @@ def test_tokenize(data):
         (tokenize.NEWLINE, '\n'),
 
         (tokenize.NAME, 'd'),
-        (tokenize.OP, '='),
+        (tokenize.OP, '<'),
         (tokenize.NUMBER, '100'),
         (tokenize.NEWLINE, '\n'),
 

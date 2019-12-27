@@ -11,7 +11,7 @@ from returns import (
 )
 
 from .datastructure import (
-    DupKeyDict as _Dict,
+    Dict as _Dict,
 )
 from .strings import (
     unescape as _unescape,
@@ -116,9 +116,7 @@ class Scope(Element):
             op = statement[1]
             if not isinstance(op, Operator):
                 raise self.SerializationError
-            if op != '=':
-                raise self.SerializationError
-            yield statement[0].value, statement[2].value
+            yield statement[0].value, (statement[1].value, statement[2].value)
 
     @_returns(tuple)
     def _raw(self):
@@ -180,9 +178,7 @@ class _StatementQueue(_typing.List[_TokenInfo]):
         self._parent = parent
 
     def append(self, token: _TokenInfo):
-        if token.exact_type in (
-                _tokenize.EQUAL,
-        ):
+        if token.exact_type in Statement.OPS:
             raise self.ShouldNotAppend
 
         if token.exact_type in (
@@ -245,6 +241,14 @@ class _StatementQueue(_typing.List[_TokenInfo]):
 
 
 class Statement(_typing.List[Element]):
+    OPS = (
+        _tokenize.EQUAL,
+        _tokenize.LESS,
+        _tokenize.LESSEQUAL,
+        _tokenize.GREATER,
+        _tokenize.GREATEREQUAL,
+    )
+
     class End(Exception):
         def __init__(self, reject_last: bool):
             self.reject_last = reject_last
@@ -282,7 +286,7 @@ class Statement(_typing.List[Element]):
         except self._queue.ShouldNotAppend:
             self.finish_queue()
 
-            if token.exact_type == _tokenize.EQUAL:
+            if token.exact_type in self.OPS:
                 self.append(Operator(token.exact_type, token.string))
             elif token.exact_type == _tokenize.LBRACE:
                 self.append(Scope())
