@@ -54,7 +54,7 @@ class String(Element):
 
     @cached_property
     def value(self):
-        return _unescape(self.raw_string)
+        return _unescape(self.raw_string[2:-2])
 
 
 class Operator(Element):
