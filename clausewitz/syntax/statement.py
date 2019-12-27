@@ -64,9 +64,9 @@ class Statement(_typing.List[_Element]):
                 return self._end(reject_last=True)
 
 
-from .token import (
+from .token import (  # noqa: E402
     Tokens as _Tokens,
 )
-from .scope import (
+from .scope import (  # noqa: E402
     Scope as _Scope,
 )

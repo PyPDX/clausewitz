@@ -8,6 +8,11 @@ requirements = [
 ]
 
 extra_test = [
+    'flake8',
+    'flake8-commas',
+    'flake8-print',
+    'flake8-quotes',
+
     'pytest>=4',
     'pytest-runner>=4',
     'pytest-cov>=2',

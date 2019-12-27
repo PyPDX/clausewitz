@@ -72,7 +72,7 @@ def parse_cmd(args=None):  # pragma: no cover
         }
     else:
         kwargs = {
-            'separators': (',', ':')
+            'separators': (',', ':'),
         }
 
     json.dump(value, sys.stdout, **kwargs)

@@ -102,6 +102,6 @@ class Tokens(_typing.List[_TokenInfo]):
         return self.number or self.name
 
 
-from .statement import (
+from .statement import (  # noqa: E402
     Statement as _Statement,
 )

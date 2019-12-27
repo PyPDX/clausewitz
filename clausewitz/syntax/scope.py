@@ -105,9 +105,9 @@ class Scope(Element):
             self.finish_statement()
 
 
-from .token import (
+from .token import (  # noqa: E402
     Tokens as _Tokens,
 )
-from .statement import (
+from .statement import (  # noqa: E402
     Statement as _Statement,
 )
