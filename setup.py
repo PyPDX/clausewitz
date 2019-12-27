@@ -20,6 +20,7 @@ extra_test = [
 extra_dev = extra_test
 
 extra_ci = extra_test + [
+    'coverage==4.*',
     'python-coveralls',
 ]
 
