@@ -4,7 +4,7 @@ from tokenize import (
     TokenInfo as _TokenInfo,
 )
 
-from clausewitz.syntax import (
+from clausewitz.syntax.scope import (
     Scope as _Scope,
 )
 

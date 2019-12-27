@@ -4,6 +4,12 @@ from tokenize import (
     TokenInfo as _TokenInfo,
 )
 
+from .element import (
+    Element as _Element,
+    Number as _Number,
+    Name as _Name,
+)
+
 
 class Tokens(_typing.List[_TokenInfo]):
     START_SCOPE = (
@@ -96,9 +102,6 @@ class Tokens(_typing.List[_TokenInfo]):
         return self.number or self.name
 
 
-from .syntax import (
-    Element as _Element,
-    Number as _Number,
-    Name as _Name,
+from .statement import (
     Statement as _Statement,
 )
