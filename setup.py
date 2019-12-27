@@ -38,7 +38,7 @@ setup(
 
     entry_points={
         'console_scripts': [
-            'tokenize-prepare=clausewitz.tokenize:prepare_cmd',
+            'tokenize-prepare=clausewitz.util.tokenize:prepare_cmd',
             'pdx-jsonify=clausewitz.parse:parse_cmd',
         ],
     },

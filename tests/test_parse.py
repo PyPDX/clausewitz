@@ -3,7 +3,7 @@ from tokenize import tokenize
 import pytest
 
 from clausewitz.parse import parse, Unfinished
-from clausewitz.tokenize import prepare
+from clausewitz.util.tokenize import prepare
 
 
 def test_parse(data):

@@ -12,7 +12,7 @@ from returns import (
 from .datastructure import (
     Dict as _Dict,
 )
-from .strings import (
+from .util.strings import (
     unescape as _unescape,
 )
 

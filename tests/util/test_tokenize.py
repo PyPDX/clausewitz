@@ -1,6 +1,6 @@
 import tokenize
 
-from clausewitz.tokenize import prepare
+from clausewitz.util.tokenize import prepare
 
 
 def test_prepare(data):

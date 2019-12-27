@@ -54,7 +54,7 @@ def parse_cmd(args=None):  # pragma: no cover
     import argparse
     import json
     from tokenize import tokenize
-    from clausewitz.tokenize import prepare
+    from clausewitz.util.tokenize import prepare
 
     parser = argparse.ArgumentParser()
     parser.add_argument('input')
