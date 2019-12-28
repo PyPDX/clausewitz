@@ -4,6 +4,7 @@ import typing as _typing
 class Dict(dict):
     DUPKEYS = '__dupkeys__'
     OPS = '__ops__'
+    MODIFIERS = '__modifiers__'
 
     def __init__(self, iterable=()):
         super().__init__()
@@ -23,8 +24,12 @@ class Dict(dict):
     def ops(self) -> _typing.Dict[str, str]:
         return self._get_meta(self.OPS)
 
+    @property
+    def modifiers(self) -> _typing.Dict[str, _typing.List[str]]:
+        return self._get_meta(self.MODIFIERS)
+
     def __setitem__(self, key, value):
-        op, v = value
+        op, *mod, v = value
 
         if key in self:
             if key not in self.dupkeys:
@@ -35,5 +40,8 @@ class Dict(dict):
 
         if op != '=':
             self.ops[key] = op
+
+        if mod:
+            self.modifiers[key] = mod
 
         return super().__setitem__(key, v)

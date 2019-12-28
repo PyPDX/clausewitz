@@ -7,3 +7,4 @@ worl\"d\""
 f = {}
 d < 100
 # this is a comment
+color = rgb { 100 200 50 }
