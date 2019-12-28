@@ -24,6 +24,8 @@ def filter_tokens(tokens: _typing.Iterable[_TokenInfo]) -> _typing.Iterator[_Tok
                 _tokenize.NEWLINE,
                 _tokenize.NL,
                 _tokenize.COMMENT,
+                _tokenize.INDENT,
+                _tokenize.DEDENT,
                 _tokenize.ENDMARKER,
         ):
             continue

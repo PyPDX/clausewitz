@@ -14,7 +14,7 @@ worl\\"d\\""""
 f = {}
 d < 100
 # this is a comment
-color = rgb { 100 200 50 }
+    color = rgb { 100 200 50 }
 '''
 
     with data('sample.txt') as readline:
@@ -76,6 +76,7 @@ def test_tokenize(data):
         (tokenize.COMMENT, '# this is a comment'),
         (tokenize.NL, '\n'),
 
+        (tokenize.INDENT, '    '),
         (tokenize.NAME, 'color'),
         (tokenize.OP, '='),
         (tokenize.NAME, 'rgb'),
@@ -85,6 +86,7 @@ def test_tokenize(data):
         (tokenize.NUMBER, '50'),
         (tokenize.OP, '}'),
         (tokenize.NEWLINE, '\n'),
+        (tokenize.DEDENT, ''),
 
         (tokenize.ENDMARKER, ''),
     )
