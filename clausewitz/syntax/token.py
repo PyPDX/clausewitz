@@ -8,6 +8,7 @@ from .element import (
     Element as _Element,
     Number as _Number,
     Name as _Name,
+    Modifier as _Modifier,
 )
 
 
@@ -30,6 +31,23 @@ class Tokens(_typing.List[_TokenInfo]):
     STRING_TYPES = (
         _tokenize.STRING,
     )
+
+    @property
+    def modifier(self) -> _typing.Optional['_Modifier']:
+        if not self:
+            return None
+
+        if len(self) != 1:
+            return None
+
+        token = self[0]
+        if token.type != _tokenize.NAME:
+            return None
+
+        if token.string not in _Modifier.MODIFIERS:
+            return None
+
+        return _Modifier(token.string)
 
     @property
     def number(self) -> _typing.Optional['_Number']:
@@ -67,6 +85,12 @@ class Tokens(_typing.List[_TokenInfo]):
         super().__init__()
         self._parent = parent
 
+    def _modifier_or_end_statement(self):
+        if self.modifier is not None:
+            raise self.ShouldNotAppend
+        else:
+            raise self.EndStatement
+
     def append(self, token: _TokenInfo):
         if token.exact_type in self.OPERATORS:
             raise self.ShouldNotAppend
@@ -79,27 +103,27 @@ class Tokens(_typing.List[_TokenInfo]):
                 *self.STRING_TYPES,
         ):
             if self:
-                raise self.EndStatement
+                return self._modifier_or_end_statement()
 
             else:
-                if self._parent.last_op:
+                if self._parent.accepts_value:
                     raise self.ShouldNotAppend
                 else:
                     raise self.EndStatement
 
         if self:
             if self[-1].end != token.start:
-                raise self.EndStatement
+                return self._modifier_or_end_statement()
 
         else:
-            if not self._parent.last_op:
+            if not self._parent.accepts_value:
                 raise self.EndStatement
 
         super().append(token)
 
     @property
     def value(self) -> '_Element':
-        return self.number or self.name
+        return self.modifier or self.number or self.name
 
 
 from .statement import (  # noqa: E402

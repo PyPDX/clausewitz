@@ -14,6 +14,7 @@ worl\\"d\\""""
 f = {}
 d < 100
 # this is a comment
+    color = rgb { 100 200 50 }
 '''
 
     with data('sample.txt') as readline:
@@ -75,14 +76,25 @@ def test_tokenize(data):
         (tokenize.COMMENT, '# this is a comment'),
         (tokenize.NL, '\n'),
 
+        (tokenize.INDENT, '    '),
+        (tokenize.NAME, 'color'),
+        (tokenize.OP, '='),
+        (tokenize.NAME, 'rgb'),
+        (tokenize.OP, '{'),
+        (tokenize.NUMBER, '100'),
+        (tokenize.NUMBER, '200'),
+        (tokenize.NUMBER, '50'),
+        (tokenize.OP, '}'),
+        (tokenize.NEWLINE, '\n'),
+        (tokenize.DEDENT, ''),
+
         (tokenize.ENDMARKER, ''),
     )
 
     with data('sample.txt') as readline:
         tokens = tokenize.tokenize(prepare(readline))
-        for t, s in expected:
+        for val in expected:
             token = next(tokens)
-            assert token.type == t
-            assert token.string == s
+            assert (token.type, token.string) == val
 
         assert tuple(tokens) == ()

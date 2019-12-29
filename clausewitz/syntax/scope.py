@@ -9,15 +9,16 @@ from returns import (
 )
 
 from .element import (
-    Element,
-    Operator,
+    Element as _Element,
+    Operator as _Operator,
+    Modifier as _Modifier,
 )
 from ..datastructure import (
     Dict as _Dict,
 )
 
 
-class Scope(Element):
+class Scope(_Element):
     class SerializationError(Exception):
         def __init__(self, data=None):
             from pprint import pformat
@@ -50,20 +51,24 @@ class Scope(Element):
     @_returns(_Dict)
     def _as_dict(self):
         for statement in self._statements:
-            if len(statement) != 3:
+            if len(statement) < 3:
                 raise self.SerializationError
             op = statement[1]
-            if not isinstance(op, Operator):
+            if not isinstance(op, _Operator):
                 raise self.SerializationError
-            yield statement[0].value, (statement[1].value, statement[2].value)
+            if not all(
+                    isinstance(element, _Modifier)
+                    for element in statement[2:-1]
+            ):
+                raise self.SerializationError
+
+            values = statement.values
+            yield values[0], values[1:]
 
     @_returns(tuple)
     def _raw(self):
         for statement in self._statements:
-            yield tuple(
-                element.value
-                for element in statement
-            )
+            yield statement.values
 
     @cached_property
     def value(self):

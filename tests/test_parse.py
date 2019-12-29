@@ -15,6 +15,9 @@ def test_parse(data):
             'd': '>=',
             'd+1': '<',
         },
+        '__modifiers__': {
+            'color': ['rgb'],
+        },
         'a': ['x.000', '"y"', '10z'],
         'b': 0,
         'c': 'true',
@@ -22,6 +25,7 @@ def test_parse(data):
         'e.xyz': '"hello\nworl"d""',
         'f': {},
         'd+1': 100,
+        'color': [100, 200, 50],
     }
 
     with data('sample.txt') as readline:

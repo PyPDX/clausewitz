@@ -62,6 +62,20 @@ class Operator(Element):
         self._exact_type = exact_type
         self._raw = raw
 
-    @cached_property
+    @property
+    def value(self):
+        return self._raw
+
+
+class Modifier(Element):
+    MODIFIERS = (
+        'rgb',
+        'hsv',
+    )
+
+    def __init__(self, raw: str):
+        self._raw = raw
+
+    @property
     def value(self):
         return self._raw

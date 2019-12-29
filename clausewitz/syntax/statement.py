@@ -7,6 +7,7 @@ from .element import (
     Element as _Element,
     String as _String,
     Operator as _Operator,
+    Modifier as _Modifier,
 )
 
 
@@ -38,8 +39,10 @@ class Statement(_typing.List[_Element]):
         raise self.End(reject_last)
 
     @property
-    def last_op(self) -> bool:
-        return len(self) == 0 or isinstance(self[-1], _Operator)
+    def accepts_value(self) -> bool:
+        return len(self) == 0 or \
+               isinstance(self[-1], _Operator) or \
+               isinstance(self[-1], _Modifier)
 
     def push(self, token: _TokenInfo) -> None:
         try:
@@ -62,6 +65,13 @@ class Statement(_typing.List[_Element]):
                 return self._end(reject_last=False)
             else:
                 return self._end(reject_last=True)
+
+    @property
+    def values(self) -> _typing.List:
+        return [
+            element.value
+            for element in self
+        ]
 
 
 from .token import (  # noqa: E402
